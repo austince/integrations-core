@@ -138,6 +138,21 @@ class TestHeaders:
                 verify=True,
             )
 
+        with mock.patch("requests.get") as get:
+            http.get("http://example.com/hello", data='')
+
+            expected_options = {'User-Agent': 'Datadog Agent/0.0.0', 'answer': '42'}
+            get.assert_called_with(
+                "http://example.com/hello",
+                headers=expected_options,
+                auth=None,
+                cert=None,
+                proxies=None,
+                timeout=(10.0, 10.0),
+                verify=True,
+                data='',
+            )
+
 
 class TestVerify:
     def test_config_default(self):
