@@ -311,19 +311,19 @@ class RequestsWrapper(object):
             else:
                 return getattr(requests, method)(url, **self.populate_options(options))
 
-    def populate_options(self, options):
+    def populate_options(self, more_options):
         # Avoid needless dictionary update if there are no options
-        if not options:
+        if not more_options:
             return self.options
 
         for option, value in iteritems(self.options):
             # Make explicitly set options take precedence
-            if option == 'headers' and 'headers' in self.options:
-                options['headers'].update(value)
+            if option == 'headers' and 'headers' in more_options:
+                more_options['headers'].update(value)
             else:
-                options.setdefault(option, value)
+                more_options.setdefault(option, value)
 
-        return options
+        return more_options
 
     @contextmanager
     def handle_tls_warning(self):
