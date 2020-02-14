@@ -119,6 +119,25 @@ class TestHeaders:
 
         assert http.options['headers'] == {'User-Agent': 'Datadog Agent/0.0.0', 'answer': '42'}
 
+    def test_header_should_be_appended(self):
+        instance = {'extra_headers': {'answer': 42}}
+        init_config = {}
+        http = RequestsWrapper(instance, init_config)
+
+        with mock.patch("requests.get") as get:
+            http.get("http://example.com/hello", headers={"foo": "bar"})
+
+            expected_options = {'foo': 'bar', 'User-Agent': 'Datadog Agent/0.0.0', 'answer': '42'}
+            get.assert_called_with(
+                "http://example.com/hello",
+                headers=expected_options,
+                auth=None,
+                cert=None,
+                proxies=None,
+                timeout=(10.0, 10.0),
+                verify=True,
+            )
+
 
 class TestVerify:
     def test_config_default(self):
