@@ -318,10 +318,7 @@ class RequestsWrapper(object):
 
         for option, value in iteritems(self.options):
             # Make explicitly set options take precedence
-            if option == 'headers' and 'headers' in option:
-                options['headers'].update(value)
-            else:
-                options.setdefault(option, value)
+            options.setdefault(option, value)
 
         return options
 
