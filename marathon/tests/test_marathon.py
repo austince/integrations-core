@@ -40,7 +40,7 @@ def test_default_configuration(aggregator, check, instance, apps, deployments, q
         else:
             raise Exception("unknown url:" + url)
 
-    check.get_json = mock.MagicMock(side_effect=side_effect)
+    check._request_json = mock.MagicMock(side_effect=side_effect)
     check.check(instance)
 
     aggregator.assert_metric('marathon.apps', value=2)
@@ -74,7 +74,7 @@ def test_empty_responses(aggregator, check, instance):
         else:
             raise Exception("unknown url:" + url)
 
-    check.get_json = mock.MagicMock(side_effect=side_effect)
+    check._request_json = mock.MagicMock(side_effect=side_effect)
     check.check(instance)
 
     aggregator.assert_metric('marathon.apps', value=0)
@@ -95,7 +95,7 @@ def test_ensure_queue_count(aggregator, apps, check, instance):
         else:
             raise Exception("unknown url:" + url)
 
-    check.get_json = mock.MagicMock(side_effect=side_effect)
+    check._request_json = mock.MagicMock(side_effect=side_effect)
     check.check(instance)
 
     aggregator.assert_metric('marathon.apps', value=2)
